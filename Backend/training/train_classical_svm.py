@@ -1,59 +1,146 @@
+
 import os
 import sys
-import time
 import joblib
 
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.svm import SVC
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix
+)
 
-# Add Backend folder to Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# --------------------------------------------------
+# 1. BACKEND PATH
+# --------------------------------------------------
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Add Backend directory to Python path
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
+
+# --------------------------------------------------
+# 2. IMPORT PREPROCESSING
+# --------------------------------------------------
 
 from preprocessing.image_preprocessing import prepare_dataset
-from classical_svm import train_classical_svm
 
 
-# Start time
-start_time = time.time()
+# --------------------------------------------------
+# 3. MODEL SAVE DIRECTORY
+# --------------------------------------------------
 
-print("Loading Preprocessed Dataset...")
+MODEL_DIR = os.path.join(BASE_DIR, "models")
+
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+
+# --------------------------------------------------
+# 4. LOAD DATASET
+# --------------------------------------------------
+
+print("=" * 50)
+print("CLASSICAL SVM - SATELLITE IMAGE CLASSIFICATION")
+print("=" * 50)
+
+print("\nLoading Dataset...")
 
 X_train, X_test, y_train, y_test, encoder = prepare_dataset()
 
-# Train model
-model = train_classical_svm(X_train, y_train)
+print("\nDataset Loaded Successfully!")
 
-# Predict test images
+print("Training Images:", len(X_train))
+print("Testing Images:", len(X_test))
+
+
+# --------------------------------------------------
+# 5. CREATE CLASSICAL SVM MODEL
+# --------------------------------------------------
+
+print("\nCreating Classical SVM Model...")
+
+model = SVC(
+    kernel="rbf",
+    C=1.0,
+    gamma="scale"
+)
+
+
+# --------------------------------------------------
+# 6. TRAIN MODEL
+# --------------------------------------------------
+
+print("\nTraining Classical SVM...")
+
+model.fit(X_train, y_train)
+
+print("\nTraining Completed Successfully!")
+
+
+# --------------------------------------------------
+# 7. PREDICTION
+# --------------------------------------------------
+
 print("\nPredicting Test Images...")
 
 y_pred = model.predict(X_test)
 
-# Evaluate model
+
+# --------------------------------------------------
+# 8. MODEL EVALUATION
+# --------------------------------------------------
+
 accuracy = accuracy_score(y_test, y_pred)
 
-print("\nClassical SVM Results")
-print("-------------------------")
-print("Accuracy:", round(accuracy * 100, 2), "%")
+print("\n" + "=" * 50)
+print("CLASSICAL SVM RESULTS")
+print("=" * 50)
+
+print(f"\nAccuracy: {accuracy * 100:.2f}%")
 
 print("\nClassification Report:")
-print(classification_report(
-    y_test,
-    y_pred,
-    target_names=encoder.classes_
-))
 
-# Create models folder
-model_path = "../models"
+print(
+    classification_report(
+        y_test,
+        y_pred,
+        target_names=encoder.classes_,
+        zero_division=0
+    )
+)
 
-os.makedirs(model_path, exist_ok=True)
+print("\nConfusion Matrix:")
 
-# Save model and encoder
-joblib.dump(model, os.path.join(model_path, "classical_svm.pkl"))
+print(confusion_matrix(y_test, y_pred))
 
-joblib.dump(encoder, os.path.join(model_path, "label_encoder.pkl"))
 
-# Execution time
-end_time = time.time()
+# --------------------------------------------------
+# 9. SAVE TRAINED MODEL
+# --------------------------------------------------
 
-print("\nExecution Time:", round(end_time - start_time, 2), "seconds")
+model_path = os.path.join(MODEL_DIR, "classical_svm.pkl")
 
-print("\nClassical SVM Model Saved Successfully!")
+encoder_path = os.path.join(MODEL_DIR, "label_encoder.pkl")
+
+print("\nSaving Model...")
+
+joblib.dump(model, model_path)
+
+joblib.dump(encoder, encoder_path)
+
+print("\nModel Saved Successfully!")
+
+print("Model Path:", model_path)
+
+print("Encoder Path:", encoder_path)
+
+
+# --------------------------------------------------
+# 10. FINAL RESULT
+# --------------------------------------------------
+
+print("\n" + "=" * 50)
+print("CLASSICAL SVM TRAINING FINISHED")
+print("=" * 50)
