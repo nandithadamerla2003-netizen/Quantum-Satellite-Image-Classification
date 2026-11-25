@@ -1,0 +1,11 @@
+Image,Actual_Class,Classical_SVM,Quantum_SVM,Status
+Forest_649.jpg,Forest,Forest,Forest,Correct
+Forest_65.jpg,Forest,Forest,Forest,Correct
+Highway_689.jpg,Highway,Highway,Industrial,Incorrect
+Highway_69.jpg,Highway,Highway,Highway,Correct
+Industrial_707.jpg,Industrial,Industrial,Industrial,Correct
+Industrial_708.jpg,Industrial,Industrial,Industrial,Correct
+PermanentCrop_717.jpg,PermanentCrop,Highway,PermanentCrop,Correct
+PermanentCrop_718.jpg,PermanentCrop,PermanentCrop,PermanentCrop,Correct
+River_702.jpg,River,River,River,Correct
+River_703.jpg,River,Forest,River,Correct

@@ -209,7 +209,13 @@ print("\nCalculating quantum kernel...")
 
 train_kernel = calculate_kernel(train_states, train_states)
 test_kernel = calculate_kernel(test_states, train_states)
+# Save quantum training states
+joblib.dump(
+    train_states,
+    os.path.join(MODEL_FOLDER, "quantum_train_states.pkl")
+)
 
+print("Quantum training states saved successfully!")
 
 # =====================================================
 # 9. TRAIN QUANTUM SVM
@@ -271,6 +277,7 @@ joblib.dump(qsvm, os.path.join(MODEL_FOLDER, "quantum_svm.pkl"))
 joblib.dump(pca, os.path.join(MODEL_FOLDER, "quantum_pca.pkl"))
 joblib.dump(scaler, os.path.join(MODEL_FOLDER, "quantum_scaler.pkl"))
 joblib.dump(encoder, os.path.join(MODEL_FOLDER, "quantum_label_encoder.pkl"))
+joblib.dump(train_states,os.path.join(MODEL_FOLDER, "quantum_train_states.pkl"))
 
 cnn.save(os.path.join(MODEL_FOLDER, "eurosat_cnn.keras"))
 feature_model.save(os.path.join(MODEL_FOLDER, "cnn_feature_extractor.keras"))

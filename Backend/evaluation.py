@@ -29,6 +29,7 @@ from qiskit.quantum_info import Statevector
 
 BACKEND_FOLDER = os.path.dirname(os.path.abspath(__file__))
 MODEL_FOLDER = os.path.join(BACKEND_FOLDER, "models")
+RESULTS_FOLDER = os.path.join(BACKEND_FOLDER, "results")
 
 tf.get_logger().setLevel("ERROR")
 
@@ -318,7 +319,7 @@ for bar, value in zip(
 plt.tight_layout()
 
 plt.savefig(
-    os.path.join(MODEL_FOLDER, "accuracy_comparison.png"),
+    os.path.join(RESULTS_FOLDER, "accuracy_comparison.png"),
     dpi=200
 )
 
@@ -376,7 +377,7 @@ for ax, cm, title in zip(
 plt.tight_layout()
 
 plt.savefig(
-    os.path.join(MODEL_FOLDER, "confusion_matrix_comparison.png"),
+    os.path.join(RESULTS_FOLDER, "confusion_matrix_comparison.png"),
     dpi=200
 )
 
