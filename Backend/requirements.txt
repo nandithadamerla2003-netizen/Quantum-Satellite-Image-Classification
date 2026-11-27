@@ -8,3 +8,5 @@ joblib
 matplotlib
 qiskit
 qiskit-machine-learning
+python-multipart
+pillow
