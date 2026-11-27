@@ -47,7 +47,7 @@ print("3. Industrial")
 print("4. PermanentCrop")
 print("5. River")
 
-print("\nSelecting 2 images from each class...")
+print("\nSelecting 2 images from each class")
 print("Maximum images: 10")
 
 
